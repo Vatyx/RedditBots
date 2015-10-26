@@ -15,8 +15,16 @@ already_done = []
 def textComment(comment):
 	body = comment.body
 	subreddit = str(comment.subreddit)
+	link_url = comment.link_url
+	post_url = comment.submission.permalink
 	time = str(datetime.datetime.fromtimestamp(comment.created_utc))
-	message = client.messages.create(body="Comment created at " + time + "\nSubreddit: " + subreddit, to="+12144035793", from_="+19723625257")
+
+	payload = "Comment created at " + time + "\nSubreddit: " + subreddit + "\nLink: " + link_url 
+	payload_post = "Post: " + post_url
+
+
+	message = client.messages.create(body=payload, to="+12144035793", from_="+19723625257")
+	message = client.messages.create(body=payload_post, to="+12144035793", from_="+19723625257")
 	message = client.messages.create(body=body, to="+12144035793", from_="+19723625257")
 
 while True:
