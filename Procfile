@@ -1,1 +1,1 @@
-web: python AccountNotifier/accountnotifier.py
+worker: python AccountNotifier/accountnotifier.py
