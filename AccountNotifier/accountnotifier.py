@@ -29,7 +29,7 @@ def textComment(comment):
 
 while True:
 	comments = alex.get_comments()
-	curr = comments.__next__()
+	curr = next(comments)
 	if not curr.id in already_done:
 		already_done.append(curr.id)
 		print(curr)
