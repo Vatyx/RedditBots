@@ -1,36 +1,45 @@
 import time
 import praw
-
-account_sid = "AC04ae25977f10fe51e9d811bf0bf2a07f"
-auth_token  = "d820c97f96b72dfb49464b79b4158779"
-client = TwilioRestClient(account_sid, auth_token)
-
-r = praw.Reddit('Instagram uploader by Vatyx')
-alex = r.get_redditor('8kneekirk8')
-
-already_done = []
-
-def textComment(comment):
-	body = comment.body
-	subreddit = str(comment.subreddit)
-	link_url = comment.link_url
-	post_url = comment.submission.permalink
-	time = str(datetime.datetime.fromtimestamp(comment.created_utc))
-
-	payload = "Comment created at " + time + "\nSubreddit: " + subreddit + "\nLink: " + link_url 
-	payload_post = "Post: " + post_url
+import OAuth2Util
 
 
-	message = client.messages.create(body=payload, to="+12144035793", from_="+19723625257")
-	message = client.messages.create(body=payload_post, to="+12144035793", from_="+19723625257")
-	message = client.messages.create(body=body, to="+12144035793", from_="+19723625257")
+r = praw.Reddit('Instagram to Imgur uploader by Vatyx')
+o = OAuth2Util.OAuth2Util(r)
+
+o.refresh()
+
+def searchSubmissions():
+	submissions = r.get_subreddit('all').get_new(limit=50)#(r, r.get_subreddit('dota2'), 10)
+	for submission in submissions:
+		print(submission.title)
 
 while True:
-	comments = alex.get_comments()
-	curr = next(comments)
-	if not curr.id in already_done:
-		already_done.append(curr.id)
-		print(curr)
-		textComment(curr)
-	print(curr.id)
-	time.sleep(10)
+	try:
+		searchSubmissions()
+		time.sleep(2)
+	except:
+		print("wow")
+
+# while True:
+#     o.refresh()
+#     print(r.get_me().comment_karma)
+#     time.sleep(3600)
+
+# r.set_oauth_app_info(client_id='sH8ArC6fMygIbg',
+#                       client_secret='RHhh15rjKXHdnmdtH0RV1TsrDow',
+#                       redirect_uri='http://127.0.0.1:65010/'
+#                                    'authorize_callback')
+
+# user = r.get_redditor('InstagramtoImgur-bot')
+
+# already_done = []
+
+# while True:
+# 	comments = alex.get_comments()
+# 	curr = next(comments)
+# 	if not curr.id in already_done:
+# 		already_done.append(curr.id)
+# 		print(curr)
+# 		textComment(curr)
+# 	print(curr.id)
+# 	time.sleep(10)
