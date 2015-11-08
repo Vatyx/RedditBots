@@ -1,6 +1,7 @@
 import time
 import praw
 import OAuth2Util
+import datetime
 
 
 r = praw.Reddit('Instagram to Imgur uploader by Vatyx')
@@ -8,17 +9,50 @@ o = OAuth2Util.OAuth2Util(r)
 
 o.refresh()
 
-def searchSubmissions():
-	submissions = r.get_subreddit('all').get_new(limit=50)#(r, r.get_subreddit('dota2'), 10)
-	for submission in submissions:
-		print(submission.title)
+alreadyChecked = []
 
-while True:
-	try:
-		searchSubmissions()
-		time.sleep(2)
-	except:
-		print("wow")
+def searchSubmissions():
+	submissions = r.get_subreddit('all').get_new(limit=5)
+	for submission in submissions:
+		if not submission.id in alreadyChecked:
+			print(submission.title)
+			alreadyChecked.append(submission.id)
+
+submissions = r.get_subreddit('all').get_new(limit=None)
+for submission in submissions:
+	if not submission.id in alreadyChecked and submission.domain == 'instagram.com':
+		print(submission.url)
+		alreadyChecked.append(submission.id)
+print("Done first!")
+# time.sleep(30)
+# submissions = r.get_subreddit('all').get_new(limit=150)
+# for submission in submissions:
+# 	if not submission.id in alreadyChecked:
+# 		print(submission.domain)
+# 		alreadyChecked.append(submission.id)
+print("Done second!")
+
+# f = open('outfile.txt', 'w')
+# submissions = praw.helpers.submission_stream(r, "all", limit=10)
+# for sub in submissions:
+# 	#print(str(datetime.datetime.fromtimestamp(sub.created_utc)))
+# 	print((sub.title).encode('ascii','ignore'))
+# 	f.write(str((sub.title).encode('ascii','ignore')))
+# 	f.write('\n')
+
+
+# submissions = r.get_subreddit('all').get_new(limit=5)
+# for submission in submissions:
+# 	print(submission.title)
+
+# while True:
+# 	try:
+# 		searchSubmissions()
+# 		time.sleep(10)
+# 		print("here!")
+# 	except:
+# 		print("ERROR wow")
+# 		time.sleep(2)
 
 # while True:
 #     o.refresh()
