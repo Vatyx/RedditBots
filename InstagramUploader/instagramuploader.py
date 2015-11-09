@@ -31,7 +31,6 @@ print("Done first!")
 # 		print(submission.domain)
 # 		alreadyChecked.append(submission.id)
 print("Done second!")
-
 # f = open('outfile.txt', 'w')
 # submissions = praw.helpers.submission_stream(r, "all", limit=10)
 # for sub in submissions:
